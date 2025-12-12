@@ -15,7 +15,7 @@ echo "📁 Creating build directory..."
 mkdir -p build/dist
 mkdir -p build/plugin
 mkdir -p build/images
-mkdir -p build/node_modules/@fontsource/ubuntu
+mkdir -p build/fonts
 
 # Copy reveal.js files
 echo "📦 Copying reveal.js files..."
@@ -24,7 +24,7 @@ cp -r node_modules/reveal.js/plugin/* build/plugin/
 
 # Copy Ubuntu font files
 echo "🔤 Copying Ubuntu font files..."
-cp -r node_modules/@fontsource/ubuntu/* build/node_modules/@fontsource/ubuntu/
+cp -r node_modules/@fontsource/ubuntu/* build/fonts/
 
 # Copy images
 echo "🖼️  Copying images..."
@@ -37,6 +37,7 @@ cp index.html build/index.html
 # Update paths in index.html for bundled version
 sed -i '' 's|node_modules/reveal.js/dist/|dist/|g' build/index.html
 sed -i '' 's|node_modules/reveal.js/plugin/|plugin/|g' build/index.html
+sed -i '' 's|node_modules/@fontsource/ubuntu/|fonts/|g' build/index.html
 
 # Create zip file
 echo "🗜️  Creating zip file..."
