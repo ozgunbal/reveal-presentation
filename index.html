@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>From React Native to Flutter: Pros, Cons and Lessons Learned</title>
+
+    <link rel="stylesheet" href="node_modules/reveal.js/dist/reset.css" />
+    <link rel="stylesheet" href="node_modules/reveal.js/dist/reveal.css" />
+    <link rel="stylesheet" href="node_modules/reveal.js/dist/theme/serif.css" />
+
+    <!-- Ubuntu font from node_modules -->
+    <link rel="stylesheet" href="node_modules/@fontsource/ubuntu/index.css" />
+
+    <!-- Theme for syntax highlighting -->
+    <link
+      rel="stylesheet"
+      href="node_modules/reveal.js/plugin/highlight/monokai.css"
+    />
+
+    <style>
+      /* Ubuntu font family */
+      .reveal {
+        font-family: 'Ubuntu', sans-serif;
+      }
+
+      /* Custom styles */
+      .reveal h1,
+      .reveal h2,
+      .reveal h3,
+      .reveal h4,
+      .reveal h5,
+      .reveal h6 {
+        text-transform: none;
+        font-family: 'Ubuntu', sans-serif;
+      }
+
+      .reveal .slides {
+        text-align: left;
+      }
+
+      .reveal .slides section {
+        text-align: left;
+      }
+
+      .reveal .positioned-image {
+        position: absolute;
+        bottom: -100px;
+        right: 50px;
+        max-width: 400px;
+      }
+
+      .reveal .profile-image {
+        position: absolute;
+        border-radius: 100px;
+        max-width: 300px;
+        right: 0;
+        bottom: 100px;
+      }
+
+      .reveal .flutter-bird-image {
+        border-radius: 50px;
+        max-width: 300px;
+      }
+
+      .reveal .learning-image {
+        border-radius: 50px;
+        max-width: 600px;
+      }
+
+      .reveal .clash-image {
+        border-radius: 50px;
+        max-width: 500px;
+      }
+
+      .reveal .secret-sauce-image {
+        border-radius: 50px;
+        max-width: 600px;
+      }
+
+      .reveal .flutter-web-image {
+        border-radius: 20px;
+        max-height: 450px;
+      }
+
+      .reveal .rn-pain-image {
+        border-radius: 50px;
+        max-width: 400px;
+      }
+
+      .reveal .refactor-popover-image {
+        border-radius: 20px;
+        max-height: 400px;
+      }
+
+      .reveal .flutter-react-image {
+        border-radius: 20px;
+        max-height: 550px;
+      }
+
+      .reveal .sauce-images-row {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 40px;
+        flex-wrap: wrap;
+      }
+
+      .reveal .sauce-images-row img {
+        border-radius: 25px;
+        max-width: 200px;
+        max-height: 200px;
+        object-fit: cover;
+      }
+
+      .reveal .two-column-layout {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+      }
+
+      .reveal .two-column-layout .left-column {
+        flex: 1;
+      }
+
+      .reveal .two-column-layout .right-column {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+      }
+
+      .reveal .two-column-layout-reverse {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+      }
+
+      .reveal .two-column-layout-reverse .left-column {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+      }
+
+      .reveal .two-column-layout-reverse .right-column {
+        flex: 1;
+      }
+
+      .reveal .developer-image,
+      .reveal .startup-image,
+      .reveal .corporate-image {
+        border-radius: 20px;
+        max-width: 400px;
+      }
+
+      .reveal .center-content {
+        text-align: center !important;
+      }
+
+      .reveal .fragment.custom.blur {
+        filter: blur(5px);
+      }
+
+      .reveal .fragment.custom.blur.visible {
+        filter: none;
+      }
+
+      /* White text color for Flutter DevTools slide */
+      .reveal .flutter-devtools-slide h3,
+      .reveal .flutter-devtools-slide li,
+      .reveal .flutter-devtools-slide p {
+        color: #f5f5f5 !important;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+      }
+
+      /* Comparison table styles */
+      .reveal .comparison-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: 0.55em;
+        margin: 20px auto;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .reveal .comparison-table th {
+        background: #333333;
+        color: white;
+        padding: 12px 8px;
+        text-align: center;
+        font-weight: bold;
+        border: none;
+      }
+
+      .reveal .comparison-table th:first-child {
+        border-top-left-radius: 10px;
+      }
+
+      .reveal .comparison-table th:last-child {
+        border-top-right-radius: 10px;
+      }
+
+      .reveal .comparison-table td {
+        padding: 10px 8px;
+        border-bottom: 1px solid #e0e0e0;
+        vertical-align: middle;
+      }
+
+      .reveal .comparison-table tbody tr {
+        background-color: #ffffff;
+      }
+
+      .reveal .comparison-table tbody tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .reveal .comparison-table td:first-child {
+        font-weight: 600;
+        color: #333333;
+        width: 25%;
+      }
+
+      .reveal .comparison-table td:nth-child(2),
+      .reveal .comparison-table td:nth-child(3) {
+        width: 37.5%;
+      }
+
+      .reveal .comparison-table tbody tr:last-child td:first-child {
+        border-bottom-left-radius: 10px;
+      }
+
+      .reveal .comparison-table tbody tr:last-child td:last-child {
+        border-bottom-right-radius: 10px;
+      }
+
+      .reveal .region-table td:nth-child(2) {
+        width: 15%
+      }
+      .reveal .region-table td:nth-child(3) {
+        width: 20%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- Slide 1: Title -->
+        <section data-markdown>
+          <textarea data-template>
+            ## From React Native to Flutter: Pros, Cons and Lessons Learned
+
+            Özgün Bal
+
+            ![DevFest](images/devfest.png) <!-- .element: class="positioned-image" -->
+          </textarea>
+        </section>
+
+        <!-- Slide 2: About Me -->
+        <section data-markdown class="left-align">
+          <textarea data-template>
+            ### About Me
+
+            ![Profile](images/me.jpeg) <!-- .element: class="profile-image" -->
+
+            React / React Native Development Lead at Innovance Consultancy
+
+            **Links**
+            - Medium: @ozgunbal
+            - Linkedin: in/ozgunbal
+            - Github: ozgunbal
+
+            **Hobbies**
+            - Scuba diving
+            - Metal music \m/
+          </textarea>
+        </section>
+
+        <!-- Slide 3: Agenda -->
+        <section data-markdown>
+          <textarea data-template>
+            ## Agenda
+
+            - Motivation
+            - My learning methods
+            - Developer experience
+            - Technology choice comparison
+          </textarea>
+        </section>
+
+        <!-- Slide 4: Why Flutter -->
+        <section>
+          <h3>Why Flutter after all these years?</h3>
+          <div class="two-column-layout">
+            <div class="left-column">
+              <ul>
+                <li class="fragment">Company necessities</li>
+                <li class="fragment">Planning internal training to add new skills to people</li>
+                <li class="fragment">Potential benefits to excite me</li>
+                <li class="fragment">Improve adaptability</li>
+                <li class="fragment">Experiencing both camps of cross platform rivals</li>
+                <li class="fragment">Comprehensively analyze future of mobile development</li>
+              </ul>
+            </div>
+            <div class="right-column">
+              <img src="images/flutter-bird.jpg" alt="Flutter Bird" class="flutter-bird-image" />
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 5 & 6: Vertical slides -->
+        <section>
+          <!-- Slide 5: Learning -->
+          <section data-transition="fade-in" class="center-content">
+            <img src="images/learning.jpg" alt="Learning" class="learning-image" />
+          </section>
+
+          <!-- Slide 6: UI Framework Paradigms -->
+          <section>
+            <h3>UI Framework Paradigms List</h3>
+            <ul>
+              <li class="fragment custom blur">Building blocks 🏗️</li>
+              <li class="fragment custom blur">Styling 🎨</li>
+              <li class="fragment custom blur">I18n 🌐</li>
+              <li class="fragment custom blur">Form management 📝</li>
+              <li class="fragment custom blur">State management ⚛️</li>
+              <li class="fragment custom blur">Navigation 🧭</li>
+              <li class="fragment custom blur">Http networking 📡</li>
+              <li class="fragment custom blur">Native code integration (for cross platforms)📱</li>
+              <li class="fragment custom blur">Testing ✅</li>
+              <li class="fragment custom blur">Type safety 🛡️</li>
+            </ul>
+          </section>
+        </section>
+
+        <!-- Slide 7 & 8: Vertical slides -->
+        <section>
+          <!-- Slide 7: Developer Experience -->
+          <section>
+            <h2>Developer Experience</h2>
+            <h3>RN pain points:</h3>
+            <div class="two-column-layout">
+              <div class="left-column">
+                <ul>
+                  <li>Too many decisions for libraries</li>
+                  <li>New hype library every time</li>
+                  <li>Fast paradigm shift</li>
+                  <li>Cognitive load</li>
+                  <li>Tool separation</li>
+                </ul>
+              </div>
+              <div class="right-column">
+                <img src="images/rn-pain.jpg" alt="React Native Pain Points" class="rn-pain-image" />
+              </div>
+            </div>
+          </section>
+
+          <!-- Slide 8: Secret Sauce -->
+          <section data-transition="fade-in" class="center-content">
+            <h3>What's the Flutter's secret sauce?</h3>
+            <div class="sauce-images-row">
+              <img src="images/sauce-perf.jpg" alt="Performance" />
+              <img src="images/sauce-consist.jpg" alt="Consistency" />
+              <img src="images/sauce-library.jpg" alt="Library" />
+              <img src="images/sauce-google.jpg" alt="Google" />
+            </div>
+          </section>
+
+          <!-- Slide 9: Flutter Developer Tools -->
+          <section data-background-image="images/flutter-devtool.jpg" data-background-opacity="0.65" data-transition="zoom" class="flutter-devtools-slide">
+            <h3>What I liked at Flutter Developer Tools</h3>
+            <div class="two-column-layout">
+              <div class="left-column">
+                <ul>
+                  <li>Next to your IDE</li>
+                  <li>Addressed many of my needs</li>
+                  <li>Suggested refactor actions (widget wrapping, abstracting etc.)</li>
+                  <li>Autocompletes widget method's boilerplate (think before AI era)</li>
+                </ul>
+              </div>
+              <div class="right-column">
+                <img src="images/refactor-popover.jpg" alt="Refactor Popover" class="refactor-popover-image" />
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <!-- Slide 9 & 9.1: Vertical slides -->
+        <section>
+          <!-- Slide 9: Similarities -->
+          <section>
+            <h3>Similarities</h3>
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>React Native</th>
+                  <th>Flutter</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Building block</td>
+                  <td>Component</td>
+                  <td>Widget</td>
+                </tr>
+                <tr>
+                  <td>UI compilation</td>
+                  <td>Render</td>
+                  <td>build</td>
+                </tr>
+                <tr>
+                  <td>Data flow</td>
+                  <td>Unidirectional</td>
+                  <td>Unidirectional</td>
+                </tr>
+                <tr>
+                  <td>UI paradigm</td>
+                  <td>Declarative</td>
+                  <td>Declarative</td>
+                </tr>
+                <tr>
+                  <td>Lifecycle</td>
+                  <td>Mount, update, unmount</td>
+                  <td>initState, didUpdateWidget, dispose</td>
+                </tr>
+                <tr>
+                  <td>Native module usage</td>
+                  <td>JS to swift/kotlin</td>
+                  <td>Dart to swift/kotlin</td>
+                </tr>
+                <tr>
+                  <td>3rd party packages</td>
+                  <td>Npm</td>
+                  <td>pub</td>
+                </tr>
+                <tr>
+                  <td>Async result</td>
+                  <td>Promise</td>
+                  <td>Future</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <!-- Slide 9.1: Mount/Init -->
+          <section data-transition="slide-in none">
+            <h3>Lifecycle: Mount / Init</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 0.45em;">
+              <div>
+                <h4 style="text-align: center; margin-bottom: 10px;">React Native</h4>
+                <pre data-id="react-code"><code class="language-javascript" data-trim data-line-numbers="8-19">
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+
+function LifecycleComponent() {
+  const [count, setCount] = useState(0);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    // Mount: runs once when component mounts
+    console.log('Component mounted');
+
+    // Async operation returning a Promise
+    fetchData().then(result => setData(result));
+
+    return () => {
+      // Unmount: cleanup function
+      console.log('Component will unmount');
+    };
+  }, []);
+
+  useEffect(() => {
+    // Update: runs when count changes
+    console.log('Count updated:', count);
+  }, [count]);
+
+  const fetchData = () => {
+    return new Promise(resolve => {
+      setTimeout(() => resolve('Data loaded'), 1000);
+    });
+  };
+
+  return (
+    &lt;View&gt;
+      &lt;Text&gt;Count: {count}&lt;/Text&gt;
+      &lt;Text&gt;Data: {data}&lt;/Text&gt;
+      &lt;TouchableOpacity onPress={() =&gt; setCount(count + 1)}&gt;
+        &lt;Text&gt;Increment&lt;/Text&gt;
+      &lt;/TouchableOpacity&gt;
+    &lt;/View&gt;
+  );
+}
+                </code></pre>
+              </div>
+              <div>
+                <h4 style="text-align: center; margin-bottom: 10px;">Flutter</h4>
+                <pre data-id="flutter-code"><code class="language-dart" data-trim data-line-numbers="11-19">
+class LifecycleWidget extends StatefulWidget {
+  @override
+  _LifecycleWidgetState createState() => _LifecycleWidgetState();
+}
+
+class _LifecycleWidgetState extends State&lt;LifecycleWidget&gt; {
+  int count = 0;
+  String? data;
+
+  @override
+  void initState() {
+    // Mount: runs once when widget is inserted
+    super.initState();
+    print('Widget initialized');
+
+    // Async operation returning a Future
+    fetchData().then((result) => setState(() => data = result));
+  }
+
+  @override
+  void didUpdateWidget(LifecycleWidget oldWidget) {
+    // Update: runs when widget configuration changes
+    super.didUpdateWidget(oldWidget);
+    print('Widget updated');
+  }
+
+  @override
+  void dispose() {
+    // Unmount: cleanup when widget is removed
+    print('Widget disposed');
+    super.dispose();
+  }
+
+  Future&lt;String&gt; fetchData() async {
+    await Future.delayed(Duration(seconds: 1));
+    return 'Data loaded';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text('Count: $count'),
+        Text('Data: ${data ?? "Loading..."}'),
+        ElevatedButton(
+          onPressed: () =&gt; setState(() =&gt; count++),
+          child: Text('Increment'),
+        ),
+      ],
+    );
+  }
+}
+                </code></pre>
+              </div>
+            </div>
+          </section>
+
+          <!-- Slide 9.2: Update -->
+          <section data-transition="none">
+            <h3>Lifecycle: Update</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 0.45em;">
+              <div>
+                <h4 style="text-align: center; margin-bottom: 10px;">React Native</h4>
+                <pre data-id="react-code"><code class="language-javascript" data-trim data-line-numbers="21-24">
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+
+function LifecycleComponent() {
+  const [count, setCount] = useState(0);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    // Mount: runs once when component mounts
+    console.log('Component mounted');
+
+    // Async operation returning a Promise
+    fetchData().then(result => setData(result));
+
+    return () => {
+      // Unmount: cleanup function
+      console.log('Component will unmount');
+    };
+  }, []);
+
+  useEffect(() => {
+    // Update: runs when count changes
+    console.log('Count updated:', count);
+  }, [count]);
+
+  const fetchData = () => {
+    return new Promise(resolve => {
+      setTimeout(() => resolve('Data loaded'), 1000);
+    });
+  };
+
+  return (
+    &lt;View&gt;
+      &lt;Text&gt;Count: {count}&lt;/Text&gt;
+      &lt;Text&gt;Data: {data}&lt;/Text&gt;
+      &lt;TouchableOpacity onPress={() =&gt; setCount(count + 1)}&gt;
+        &lt;Text&gt;Increment&lt;/Text&gt;
+      &lt;/TouchableOpacity&gt;
+    &lt;/View&gt;
+  );
+}
+                </code></pre>
+              </div>
+              <div>
+                <h4 style="text-align: center; margin-bottom: 10px;">Flutter</h4>
+                <pre data-id="flutter-code"><code class="language-dart" data-trim data-line-numbers="21-25">
+class LifecycleWidget extends StatefulWidget {
+  @override
+  _LifecycleWidgetState createState() => _LifecycleWidgetState();
+}
+
+class _LifecycleWidgetState extends State&lt;LifecycleWidget&gt; {
+  int count = 0;
+  String? data;
+
+  @override
+  void initState() {
+    // Mount: runs once when widget is inserted
+    super.initState();
+    print('Widget initialized');
+
+    // Async operation returning a Future
+    fetchData().then((result) => setState(() => data = result));
+  }
+
+  @override
+  void didUpdateWidget(LifecycleWidget oldWidget) {
+    // Update: runs when widget configuration changes
+    super.didUpdateWidget(oldWidget);
+    print('Widget updated');
+  }
+
+  @override
+  void dispose() {
+    // Unmount: cleanup when widget is removed
+    print('Widget disposed');
+    super.dispose();
+  }
+
+  Future&lt;String&gt; fetchData() async {
+    await Future.delayed(Duration(seconds: 1));
+    return 'Data loaded';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text('Count: $count'),
+        Text('Data: ${data ?? "Loading..."}'),
+        ElevatedButton(
+          onPressed: () =&gt; setState(() =&gt; count++),
+          child: Text('Increment'),
+        ),
+      ],
+    );
+  }
+}
+                </code></pre>
+              </div>
+            </div>
+          </section>
+
+          <!-- Slide 9.3: Unmount/Dispose -->
+          <section data-transition="none">
+            <h3>Lifecycle: Unmount / Dispose</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 0.45em;">
+              <div>
+                <h4 style="text-align: center; margin-bottom: 10px;">React Native</h4>
+                <pre data-id="react-code"><code class="language-javascript" data-trim data-line-numbers="15-18">
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+
+function LifecycleComponent() {
+  const [count, setCount] = useState(0);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    // Mount: runs once when component mounts
+    console.log('Component mounted');
+
+    // Async operation returning a Promise
+    fetchData().then(result => setData(result));
+
+    return () => {
+      // Unmount: cleanup function
+      console.log('Component will unmount');
+    };
+  }, []);
+
+  useEffect(() => {
+    // Update: runs when count changes
+    console.log('Count updated:', count);
+  }, [count]);
+
+  const fetchData = () => {
+    return new Promise(resolve => {
+      setTimeout(() => resolve('Data loaded'), 1000);
+    });
+  };
+
+  return (
+    &lt;View&gt;
+      &lt;Text&gt;Count: {count}&lt;/Text&gt;
+      &lt;Text&gt;Data: {data}&lt;/Text&gt;
+      &lt;TouchableOpacity onPress={() =&gt; setCount(count + 1)}&gt;
+        &lt;Text&gt;Increment&lt;/Text&gt;
+      &lt;/TouchableOpacity&gt;
+    &lt;/View&gt;
+  );
+}
+                </code></pre>
+              </div>
+              <div>
+                <h4 style="text-align: center; margin-bottom: 10px;">Flutter</h4>
+                <pre data-id="flutter-code"><code class="language-dart" data-trim data-line-numbers="27-31">
+class LifecycleWidget extends StatefulWidget {
+  @override
+  _LifecycleWidgetState createState() => _LifecycleWidgetState();
+}
+
+class _LifecycleWidgetState extends State&lt;LifecycleWidget&gt; {
+  int count = 0;
+  String? data;
+
+  @override
+  void initState() {
+    // Mount: runs once when widget is inserted
+    super.initState();
+    print('Widget initialized');
+
+    // Async operation returning a Future
+    fetchData().then((result) => setState(() => data = result));
+  }
+
+  @override
+  void didUpdateWidget(LifecycleWidget oldWidget) {
+    // Update: runs when widget configuration changes
+    super.didUpdateWidget(oldWidget);
+    print('Widget updated');
+  }
+
+  @override
+  void dispose() {
+    // Unmount: cleanup when widget is removed
+    print('Widget disposed');
+    super.dispose();
+  }
+
+  Future&lt;String&gt; fetchData() async {
+    await Future.delayed(Duration(seconds: 1));
+    return 'Data loaded';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text('Count: $count'),
+        Text('Data: ${data ?? "Loading..."}'),
+        ElevatedButton(
+          onPressed: () =&gt; setState(() =&gt; count++),
+          child: Text('Increment'),
+        ),
+      ],
+    );
+  }
+}
+                </code></pre>
+              </div>
+            </div>
+          </section>
+
+          <!-- Slide 9.4: Promise/Future -->
+          <section data-transition="none">
+            <h3>Async: Promise / Future</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 0.45em;">
+              <div>
+                <h4 style="text-align: center; margin-bottom: 10px;">React Native</h4>
+                <pre data-id="react-code"><code class="language-javascript" data-trim data-line-numbers="26-30">
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+
+function LifecycleComponent() {
+  const [count, setCount] = useState(0);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    // Mount: runs once when component mounts
+    console.log('Component mounted');
+
+    // Async operation returning a Promise
+    fetchData().then(result => setData(result));
+
+    return () => {
+      // Unmount: cleanup function
+      console.log('Component will unmount');
+    };
+  }, []);
+
+  useEffect(() => {
+    // Update: runs when count changes
+    console.log('Count updated:', count);
+  }, [count]);
+
+  const fetchData = () => {
+    return new Promise(resolve => {
+      setTimeout(() => resolve('Data loaded'), 1000);
+    });
+  };
+
+  return (
+    &lt;View&gt;
+      &lt;Text&gt;Count: {count}&lt;/Text&gt;
+      &lt;Text&gt;Data: {data}&lt;/Text&gt;
+      &lt;TouchableOpacity onPress={() =&gt; setCount(count + 1)}&gt;
+        &lt;Text&gt;Increment&lt;/Text&gt;
+      &lt;/TouchableOpacity&gt;
+    &lt;/View&gt;
+  );
+}
+                </code></pre>
+              </div>
+              <div>
+                <h4 style="text-align: center; margin-bottom: 10px;">Flutter</h4>
+                <pre data-id="flutter-code"><code class="language-dart" data-trim data-line-numbers="33-37">
+class LifecycleWidget extends StatefulWidget {
+  @override
+  _LifecycleWidgetState createState() => _LifecycleWidgetState();
+}
+
+class _LifecycleWidgetState extends State&lt;LifecycleWidget&gt; {
+  int count = 0;
+  String? data;
+
+  @override
+  void initState() {
+    // Mount: runs once when widget is inserted
+    super.initState();
+    print('Widget initialized');
+
+    // Async operation returning a Future
+    fetchData().then((result) => setState(() => data = result));
+  }
+
+  @override
+  void didUpdateWidget(LifecycleWidget oldWidget) {
+    // Update: runs when widget configuration changes
+    super.didUpdateWidget(oldWidget);
+    print('Widget updated');
+  }
+
+  @override
+  void dispose() {
+    // Unmount: cleanup when widget is removed
+    print('Widget disposed');
+    super.dispose();
+  }
+
+  Future&lt;String&gt; fetchData() async {
+    await Future.delayed(Duration(seconds: 1));
+    return 'Data loaded';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text('Count: $count'),
+        Text('Data: ${data ?? "Loading..."}'),
+        ElevatedButton(
+          onPressed: () =&gt; setState(() =&gt; count++),
+          child: Text('Increment'),
+        ),
+      ],
+    );
+  }
+}
+                </code></pre>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <!-- Slide 10 & 10.1: Vertical slides -->
+        <section>
+          <!-- Slide 10: Differences -->
+          <section>
+            <h3>Differences</h3>
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>React Native</th>
+                  <th>Flutter</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Child/children</td>
+                  <td>Mostly implicit</td>
+                  <td>Explicit</td>
+                </tr>
+                <tr>
+                  <td>Library management</td>
+                  <td>Hard to figure out</td>
+                  <td>Less option, easier to handle</td>
+                </tr>
+                <tr>
+                  <td>Argument</td>
+                  <td>Only named props</td>
+                  <td>Positional and named arguments</td>
+                </tr>
+                <tr>
+                  <td>Type system</td>
+                  <td>Easy to disable</td>
+                  <td>Strict type system</td>
+                </tr>
+                <tr>
+                  <td>Plugins/extension</td>
+                  <td>No official IDE extension</td>
+                  <td>Official one comprehensive</td>
+                </tr>
+                <tr>
+                  <td>Web support</td>
+                  <td>Similar library advantage</td>
+                  <td>Canvas is no good</td>
+                </tr>
+                <tr>
+                  <td>UI View</td>
+                  <td>Uses native components</td>
+                  <td>Draws every pixel</td>
+                </tr>
+                <tr>
+                  <td>Adaption</td>
+                  <td>Mostly from web developers</td>
+                  <td>Native or backend developers</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <!-- Slide 10.1: Child/Children - Code Example -->
+          <section data-transition="slide-in none">
+            <h3>Child/Children: Implicit vs Explicit</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 0.45em;">
+              <div>
+                <h4 style="text-align: center; margin-bottom: 10px;">React Native - Implicit</h4>
+                <pre data-id="rn-children"><code class="language-javascript" data-trim data-line-numbers="4-10">
+import React from 'react';
+import { View, Text } from 'react-native';
+
+function Card({ children }) {
+  return (
+    &lt;View style={{ padding: 20 }}&gt;
+      {children}
+    &lt;/View&gt;
+  );
+}
+
+function App() {
+  return (
+    &lt;Card&gt;
+      &lt;Text&gt;Title&lt;/Text&gt;
+      &lt;Text&gt;Description&lt;/Text&gt;
+    &lt;/Card&gt;
+  );
+}
+                </code></pre>
+              </div>
+              <div>
+                <h4 style="text-align: center; margin-bottom: 10px;">Flutter - Explicit</h4>
+                <pre data-id="flutter-children"><code class="language-dart" data-trim data-line-numbers="4-13">
+import 'package:flutter/material.dart';
+
+class CardWidget extends StatelessWidget {
+  final Widget child;
+
+  CardWidget({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(20),
+      child: child,
+    );
+  }
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return CardWidget(
+      child: Column(
+        children: [
+          Text('Title'),
+          Text('Description'),
+        ],
+      ),
+    );
+  }
+}
+                </code></pre>
+              </div>
+            </div>
+          </section>
+
+          <!-- Slide 10.2: Arguments - Named Props vs Positional/Named -->
+          <section data-transition="slide-in none">
+            <h3>Arguments: Named Props vs Positional & Named</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 0.45em;">
+              <div>
+                <h4 style="text-align: center; margin-bottom: 10px;">React Native - Only Named Props</h4>
+                <pre data-id="rn-args"><code class="language-javascript" data-trim data-line-numbers="4,18-21">
+import React from 'react';
+import { View, Text } from 'react-native';
+
+function Button({ title, onPress, color, disabled }) {
+  return (
+    &lt;TouchableOpacity
+      onPress={onPress}
+      disabled={disabled}
+      style={{ backgroundColor: color }}&gt;
+      &lt;Text&gt;{title}&lt;/Text&gt;
+    &lt;/TouchableOpacity&gt;
+  );
+}
+
+function App() {
+  return (
+    &lt;Button
+      title="Click me"
+      onPress={() =&gt; console.log('Pressed')}
+      color="blue"
+      disabled={false}
+    /&gt;
+  );
+}
+                </code></pre>
+              </div>
+              <div>
+                <h4 style="text-align: center; margin-bottom: 10px;">Flutter - Positional & Named Arguments</h4>
+                <pre data-id="flutter-args"><code class="language-dart" data-trim data-line-numbers="4-13,30-34">
+import 'package:flutter/material.dart';
+
+class CustomButton extends StatelessWidget {
+  final String title;           // Positional
+  final VoidCallback onPressed; // Positional
+  final Color? color;           // Named (optional)
+  final bool? disabled;         // Named (optional)
+
+  CustomButton(
+    this.title,
+    this.onPressed,
+    {this.color, this.disabled = false}
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: disabled! ? null : onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color ?? Colors.blue,
+      ),
+      child: Text(title),
+    );
+  }
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return CustomButton(
+      'Click me',
+      () => print('Pressed'),
+      color: Colors.blue,
+      disabled: false,
+    );
+  }
+}
+                </code></pre>
+              </div>
+            </div>
+          </section>
+
+          <!-- Slide 10.3: Flutter Web DOM Tree -->
+          <section data-transition="slide-in none" class="center-content">
+            <h3>Flutter Web - HTML DOM</h3>
+            <img src="images/flutter-web.jpg" alt="Flutter Web DOM Tree" class="flutter-web-image" />
+            <p>trends.builtwith.com -> React 55m, Flutter 38k</p>
+          </section>
+        </section>
+
+        <!-- Slide 12: Community -->
+        <section>
+          <h3>Community and Ecosystem</h3>
+          <div class="two-column-layout">
+            <div class="left-column">
+              <ul>
+                <li>RN's ecosystem is bigger but Flutter is more opinionated</li>
+                <li>Improving each other: flutter_hooks, OTA update</li>
+                <li>Events & Conferences: Flutter reduces the gap in recent years</li>
+              </ul>
+            </div>
+            <div class="right-column">
+              <img src="images/flutter-react.jpg" alt="Flutter vs React" class="flutter-react-image" />
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 13-16: Technology Choice (Vertical Slides) -->
+        <section>
+          <section data-markdown>
+            <textarea data-template>
+              <div style="text-align: center;">
+                <h3>Technology Choice</h3>
+                <img src="images/choice-clash.jpg" alt="Technology Choice" class="clash-image" />
+              </div>
+            </textarea>
+          </section>
+
+          <section>
+            <h3>Single Developer</h3>
+            <div class="two-column-layout-reverse">
+              <div class="left-column">
+                <img src="images/developer.jpg" alt="Single Developer" class="developer-image" />
+              </div>
+              <div class="right-column">
+                <ul>
+                  <li>Which one is productive for you?</li>
+                  <li>Less thinking, easy to prototype → Flutter</li>
+                  <li>Future investment (Backend, cli tool, web) → React Native</li>
+                  <li>Documentation and where to start → Flutter</li>
+                  <li>Consistent tooling → Flutter</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h3>Startup</h3>
+            <div class="two-column-layout-reverse">
+              <div class="left-column">
+                <img src="images/startup.jpg" alt="Startup" class="startup-image" />
+              </div>
+              <div class="right-column">
+                <ul>
+                  <li>Time to MVP</li>
+                  <li>Developer market</li>
+                  <li>Short, middle, long term plans</li>
+                  <li>Previous experience of devs</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h3>Enterprise</h3>
+            <div class="two-column-layout-reverse">
+              <div class="left-column">
+                <img src="images/corporate.jpg" alt="Enterprise" class="corporate-image" />
+              </div>
+              <div class="right-column">
+                <ul>
+                  <li>What other companies choose in same domain</li>
+                  <li>Developer market</li>
+                  <li>Using same resources for different projects</li>
+                  <li>Long term plans to not risk ongoing process</li>
+                  <li>Regional choices</li>
+                  <li>Other platforms (car, tv, watch, VR)</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <!-- Slide 17: Regional Job Market Overview -->
+          <section>
+            <h3>Regional Job Market Overview</h3>
+            <table class="comparison-table region-table" style="font-size: 0.45em;">
+              <thead>
+                <tr>
+                  <th>Region</th>
+                  <th>Job Ratio (RN:Flutter)</th>
+                  <th>RN Dominance</th>
+                  <th>Key Insight</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>🇺🇸 North America</td>
+                  <td><strong>6:1</strong></td>
+                  <td>⚫⚫⚫⚫⚫ Very High</td>
+                  <td>Most RN-dominated market</td>
+                </tr>
+                <tr>
+                  <td>🇪🇺 Europe</td>
+                  <td><strong>3:1</strong></td>
+                  <td>⚫⚫⚫⚪⚪ High</td>
+                  <td>Flutter gaining in new projects (52%)</td>
+                </tr>
+                <tr>
+                  <td>🌏 Asia</td>
+                  <td><strong>1.5:1</strong></td>
+                  <td>⚫⚫⚪⚪⚪ Balanced</td>
+                  <td>Most balanced market, Flutter leads in China</td>
+                </tr>
+                <tr>
+                  <td>🌍 Middle East</td>
+                  <td><strong>2:1</strong></td>
+                  <td>⚫⚫⚫⚪⚪ Moderate</td>
+                  <td>Flutter booming in fintech/startups</td>
+                </tr>
+                <tr>
+                  <td>🌎 Latin America</td>
+                  <td><strong>2:1</strong></td>
+                  <td>⚫⚫⚫⚪⚪ Moderate</td>
+                  <td>RN slightly ahead</td>
+                </tr>
+                <tr>
+                  <td>🌐 <strong>Global Average</strong></td>
+                  <td><strong>2.5:1</strong></td>
+                  <td>⚫⚫⚫⚪⚪ Moderate</td>
+                  <td><strong>RN leads overall</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </section>
+
+        <section data-transition="fade-in" class="center-content">
+          <img src="images/luffy-qa.jpg" alt="Luffy Q&A" class="secret-sauce-image" />
+        </section>
+      </div>
+    </div>
+
+    <script src="node_modules/reveal.js/dist/reveal.js"></script>
+    <script src="node_modules/reveal.js/plugin/notes/notes.js"></script>
+    <script src="node_modules/reveal.js/plugin/markdown/markdown.js"></script>
+    <script src="node_modules/reveal.js/plugin/highlight/highlight.js"></script>
+    <script src="node_modules/reveal.js/plugin/zoom/zoom.js"></script>
+
+    <script>
+      Reveal.initialize({
+        hash: true,
+        controls: true,
+        progress: true,
+        center: true,
+        transition: "slide",
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealZoom]
+      });
+    </script>
+  </body>
+</html>

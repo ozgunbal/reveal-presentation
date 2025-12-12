@@ -1,0 +1,34 @@
+# Node modules
+node_modules/
+
+# Build artifacts
+build/
+presentation-bundle.zip
+
+# macOS files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Backup directories
+images_backup/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment files
+.env
+.env.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+*.tmp
+*.temp
