@@ -34,10 +34,19 @@ cp -r images/* build/images/
 echo "📄 Copying and updating index.html..."
 cp index.html build/index.html
 
-# Update paths in index.html for bundled version
-sed -i '' 's|node_modules/reveal.js/dist/|dist/|g' build/index.html
-sed -i '' 's|node_modules/reveal.js/plugin/|plugin/|g' build/index.html
-sed -i '' 's|node_modules/@fontsource/ubuntu/|fonts/|g' build/index.html
+# Update paths in index.html for bundled version (cross-platform compatible)
+# Detect OS for sed compatibility
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  # macOS
+  sed -i '' 's|node_modules/reveal.js/dist/|dist/|g' build/index.html
+  sed -i '' 's|node_modules/reveal.js/plugin/|plugin/|g' build/index.html
+  sed -i '' 's|node_modules/@fontsource/ubuntu/|fonts/|g' build/index.html
+else
+  # Linux (GitHub Actions)
+  sed -i 's|node_modules/reveal.js/dist/|dist/|g' build/index.html
+  sed -i 's|node_modules/reveal.js/plugin/|plugin/|g' build/index.html
+  sed -i 's|node_modules/@fontsource/ubuntu/|fonts/|g' build/index.html
+fi
 
 # Create zip file
 echo "🗜️  Creating zip file..."
